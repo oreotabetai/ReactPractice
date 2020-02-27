@@ -4,12 +4,27 @@ import ReactDOM from 'react-dom';
 import './index.css';
 
 class Square extends React.Component {
+    // コンストラクタ
+    constructor(props) {
+        super(props);
+        this.state =
+        {
+            value: null,
+        };
+    }
+    // 画面上に示した位説明書き react要素を返却
     render() {
         return (
 
-            <button className="square">
+            // <button className="square" onClick={function () {
+            //     alert('click');
+            // }}>
+            <button
+                className="square"
+                onClick={() => this.setState({ value: 'X' })}
+            >
                 // propsはパラメタのこと
-                {this.props.value}
+                {this.state.value}
             </button>
         );
     }
