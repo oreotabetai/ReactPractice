@@ -15,24 +15,45 @@ class Square extends React.Component {
     // 画面上に示した位説明書き react要素を返却
     render() {
         return (
-
             // <button className="square" onClick={function () {
             //     alert('click');
             // }}>
             <button
                 className="square"
-                onClick={() => this.setState({ value: 'X' })}
+                onClick={() => this.props.onClick()}
             >
                 // propsはパラメタのこと
-                {this.state.value}
+                {this.props.value}
             </button>
         );
     }
 }
 
 class Board extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            squares: Array(9).fill(null),
+        };
+    }
+
+    // クリックイベントを処理
+    handleClick(i) {
+        // 配列のコピー
+        const squares = this.state.squares.slice();
+        squares[i] = 'X';
+        this.setState({ squares: squares });
+    }
+
     renderSquare(i) {
-        return <Square value={i} />;
+        // square関数に渡す
+        return (
+            <Square
+                // 2つのprops
+                value={this.state.squares[i]}
+                onClick={() => this.handleClick(i)}
+            />
+        );
     } render() {
         const status = 'Next player:X';
 
