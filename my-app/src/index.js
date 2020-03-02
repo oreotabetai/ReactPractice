@@ -3,30 +3,12 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 
-class Square extends React.Component {
-    // コンストラクタ
-    constructor(props) {
-        super(props);
-        this.state =
-        {
-            value: null,
-        };
-    }
-    // 画面上に示した位説明書き react要素を返却
-    render() {
-        return (
-            // <button className="square" onClick={function () {
-            //     alert('click');
-            // }}>
-            <button
-                className="square"
-                onClick={() => this.props.onClick()}
-            >
-                // propsはパラメタのこと
-                {this.props.value}
-            </button>
-        );
-    }
+function Square(props) {
+    return (
+        <button className="square" onClick={props.onClick}>
+            {props.value}
+        </button>
+    );
 }
 
 class Board extends React.Component {
@@ -34,6 +16,7 @@ class Board extends React.Component {
         super(props);
         this.state = {
             squares: Array(9).fill(null),
+            xIsNext: true,
         };
     }
 
@@ -41,8 +24,11 @@ class Board extends React.Component {
     handleClick(i) {
         // 配列のコピー
         const squares = this.state.squares.slice();
-        squares[i] = 'X';
-        this.setState({ squares: squares });
+        squares[i] = this.state.xIsNext ? 'X' : 'O';
+        this.setState({
+            squares: squares,
+            xIsNext: !this.state.xIsNext,
+        });
     }
 
     renderSquare(i) {
@@ -54,8 +40,10 @@ class Board extends React.Component {
                 onClick={() => this.handleClick(i)}
             />
         );
-    } render() {
-        const status = 'Next player:X';
+    }
+
+    render() {
+        const status = 'Next player:X' + (this.state.xIsNext ? 'X' : 'O');
 
         return (
             <div>
