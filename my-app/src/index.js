@@ -15,65 +15,38 @@ class Board extends React.Component {
     // クリックイベントを処理
     handleClick(i) {
 
-        const history = this.state.history;
-        const current = history[history.length - 1];
-
-        // 配列のコピー
-        const squares = this.state.squares.slice();
-
-        if (calculateWinner(squares) || squares[i]) {
-            return;
+        renderSquare(i) {
+            // square関数に渡す
+            return (
+                <Square
+                    // 2つのprops
+                    value={this.props.squares[i]}
+                    onClick={() => this.props.handleClick(i)}
+                />
+            );
         }
 
-        squares[i] = this.state.xIsNext ? 'X' : 'O';
-        this.setState({
-            // 配列を繋げる。
-            history: history.concat([{
-                squares: squares,
-            }]),
-            xIsNext: !this.state.xIsNext,
-        });
-    }
-
-    renderSquare(i) {
-        // square関数に渡す
-        return (
-            <Square
-                // 2つのprops
-                value={this.props.squares[i]}
-                onClick={() => this.props.handleClick(i)}
-            />
-        );
-    }
-
-    render() {
-        const winner = calculateWinner(this.state.squares);
-        let status;
-        if (winner) {
-            status = 'Winner: ' + winner;
-        } else {
-            status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
+        render() {
+            return (
+                <div>
+                    <div className="board-row">
+                        {this.renderSquare(0)}
+                        {this.renderSquare(1)}
+                        {this.renderSquare(2)}
+                    </div>
+                    <div className="board-row">
+                        {this.renderSquare(3)}
+                        {this.renderSquare(4)}
+                        {this.renderSquare(5)}
+                    </div>
+                    <div className="board-row">
+                        {this.renderSquare(6)}
+                        {this.renderSquare(7)}
+                        {this.renderSquare(8)}
+                    </div>
+                </div>
+            );
         }
-
-        return (
-            <div>
-                <div className="board-row">
-                    {this.renderSquare(0)}
-                    {this.renderSquare(1)}
-                    {this.renderSquare(2)}
-                </div>
-                <div className="board-row">
-                    {this.renderSquare(3)}
-                    {this.renderSquare(4)}
-                    {this.renderSquare(5)}
-                </div>
-                <div className="board-row">
-                    {this.renderSquare(6)}
-                    {this.renderSquare(7)}
-                    {this.renderSquare(8)}
-                </div>
-            </div>
-        );
     }
 }
 
@@ -114,6 +87,21 @@ class Game extends React.Component {
                 </div>
             </div>
         );
+    }
+    handleClick(i) {
+        const history = this.state.history;
+        const current = history[history.length - 1];
+        const squares = current.squares.slice();
+        if (caluculateWinner(squares) || squares[i]) {
+            return;
+        }
+        squares[i] = this.state.xIsNext ? 'X' : 'O';
+        this.setState({
+            history: history.concat([{
+                squares: squares,
+            }]),
+            xIsNext: !this.state.xIsNext,
+        });
     }
 }
 
